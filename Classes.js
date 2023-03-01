@@ -1,10 +1,37 @@
 
 class Item {
+  #name;   // encapsulation 
+  #price;
+  #quantity;
+
   constructor(name, price, quantity) {
-   
-    this.name = name;
-    this.price = price;
-    this.quantity = quantity;
+    this.#name = name;
+    this.#price = price;
+    this.#quantity = quantity;
+  }
+
+  // Getters for private properties
+  get name() {
+    return this.#name;
+  }
+
+  get price() {
+    return this.#price;
+  }
+
+  get quantity() {
+    return this.#quantity;
+  }
+  setName(name) {
+    this.#name = name;
+  }
+
+  setPrice(price) {
+    this.#price = price;
+  }
+
+  setQuantity(quantity) {
+    this.#quantity = quantity;
   }
 
   // Abstract method to calculate the total price of the item
@@ -16,7 +43,7 @@ class Item {
 // Concrete class for product items in the shopping cart
 class Product extends Item {
   constructor(name, price, quantity) {
-    super(name, price, quantity);
+    super(name, price, quantity);    //call the parent class 
   }
 
   // Override the abstract method to calculate the total price of the product item
@@ -25,49 +52,52 @@ class Product extends Item {
   }
 }
 
+class ShoppingCart {
+  #items;
 
-class ShoppingCart   {
   constructor() {
-    this.items = [];
+    this.#items = [];
+  }
+
+  // Getter for private property
+  get items() {
+    return this.#items;
   }
 
   addItem(product, quantity) {
     // Check if the product is already in the cart
-    for (let i = 0; i < this.items.length; i++) {
-      if (this.items[i].product.name === product.name) {
-        this.items[i].quantity += quantity;
+    for (let i = 0; i < this.#items.length; i++) {
+      if (this.#items[i].product.name === product.name) {
+        this.#items[i].quantity += quantity;
         return;
       }
     }
-    
-    // If not, add a new item to the cart
-    this.items.push({
+
+    // If not add a new item to the cart
+    this.#items.push({
       product: product,
       quantity: quantity
     });
   }
-  
+
   removeItem(index) {
-    this.items.splice(index, 1);
+    this.#items.splice(index, 1);
   }
-  
+
   getTotal() {
     let total = 0;
-    for (let i = 0; i < this.items.length; i++) {
-      total += this.items[i].product.price * this.items[i].quantity;
+    for (let i = 0; i < this.#items.length; i++) {
+      total += this.#items[i].product.price * this.#items[i].quantity;
     }
     return total;
   }
 
-
-
-  
   clearCart() {
-    this.items = [];
+    this.#items = [];
   }
 }
 
-// Global variables
+
 const cart = new ShoppingCart();
 
 // Functions for interacting with the cart
@@ -87,7 +117,9 @@ function checkout() {
     items: cart.items,
     total: cart.getTotal()
   };
-  alert(`Order placed! Total: $${order.total.toFixed(2)}`);
+  alert(`Congratulations! Joy Matubber
+   Order Successfull
+   Total Cost: $ ${order.total.toFixed(1)}`);
   cart.clearCart();
   updateCartDisplay();
 }
@@ -114,7 +146,7 @@ function updateCartDisplay() {
     
     const priceSpan = document.createElement('span');
     priceSpan.className = 'item-price';
-    priceSpan.textContent = `$${item.product.price.toFixed(2)}`;
+    priceSpan.textContent = `$${item.product.price.toFixed(1)}`;
     li.appendChild(priceSpan);
     
     const quantitySpan = document.createElement('span');
@@ -125,7 +157,7 @@ function updateCartDisplay() {
     
     const removeButton = document.createElement('button');
     removeButton.className = 'remove-button';
-    removeButton.textContent = 'Remove';
+    removeButton.textContent = 'Remove Product';
     removeButton.onclick = function() {
       removeFromCart(i);
     };
@@ -134,7 +166,7 @@ function updateCartDisplay() {
     cartList.appendChild(li);
   }
   
-  // Update the total
+  
   const total = cart.getTotal();
-  cartTotal.textContent = `$${total.toFixed(2)}`;
+  cartTotal.textContent = `$${total.toFixed(1)}`;
 }

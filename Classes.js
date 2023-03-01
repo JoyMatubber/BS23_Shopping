@@ -1,18 +1,36 @@
-// Product class
-class Product {
-  constructor(name, price, description) {
+
+class Item {
+  constructor(name, price, quantity) {
+   
     this.name = name;
     this.price = price;
-    this.description = description;
+    this.quantity = quantity;
+  }
+
+  // Abstract method to calculate the total price of the item
+  getTotal() {
+    
   }
 }
 
-// Shopping cart class
-class ShoppingCart {
+// Concrete class for product items in the shopping cart
+class Product extends Item {
+  constructor(name, price, quantity) {
+    super(name, price, quantity);
+  }
+
+  // Override the abstract method to calculate the total price of the product item
+  getTotal() {
+    return this.price * this.quantity;
+  }
+}
+
+
+class ShoppingCart   {
   constructor() {
     this.items = [];
   }
-  
+
   addItem(product, quantity) {
     // Check if the product is already in the cart
     for (let i = 0; i < this.items.length; i++) {
@@ -40,6 +58,9 @@ class ShoppingCart {
     }
     return total;
   }
+
+
+
   
   clearCart() {
     this.items = [];
